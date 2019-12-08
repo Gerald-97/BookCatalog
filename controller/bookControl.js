@@ -67,18 +67,15 @@ const updateBook = (req, res, next) => {
                 if (image) {
                     data.image = image;
                 }
-
                 if (author) {
                     data.author = author;
                 }
-
                 if (description) {
                     data.description = description;
                 }
                 if (published) {
                     data.published = published;
                 }
-
                 data.save((err, editedBook) => {
                     if (err) {
                         next(err)

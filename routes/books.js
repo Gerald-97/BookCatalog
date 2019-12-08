@@ -9,8 +9,8 @@ router.get('/all', book.allBooks);
 
 router.get('/:id', book.bookEntry);
 
-router.put('/:id', token, book.updateBook);
+router.put('/:id', book.updateBook);
 
-router.delete('/:id', token, book.deleteBook);
+router.delete('/:id', book.deleteBook);
 
 module.exports = router;
