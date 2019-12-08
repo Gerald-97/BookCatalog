@@ -47,55 +47,46 @@ const bookEntry = async(req, res, next) => {
 }
 
 const updateBook = (req, res, next) => {
-    if (!req.user) {
-        return res.status(401).json({
-            message: "You need to be an admin to update  books"
-        });
-    } else {
-        const id = req.params.id;
-        const { title, author, image, description, published } = req.body;
-        Book.findOne({ _id: id }, (err, data) => {
-            if (err) next(err);
-            if (!data) {
-                return res.status(404).json({
-                    message: "Book doesn't exist"
-                })
-            } else {
-                if (title) {
-                    data.title = title;
-                }
-                if (image) {
-                    data.image = image;
-                }
-                if (author) {
-                    data.author = author;
-                }
-                if (description) {
-                    data.description = description;
-                }
-                if (published) {
-                    data.published = published;
-                }
-                data.save((err, editedBook) => {
-                    if (err) {
-                        next(err)
-                    } else {
-                        res.status(200).send(editedBook);
-                    }
-                })
+    const id = req.params.id;
+    const { title, author, image, description, published } = req.body;
+    Book.findOne({ _id: id }, (err, data) => {
+        if (err) next(err);
+        if (!data) {
+            return res.status(404).json({
+                message: "Book doesn't exist"
+            })
+        } else {
+            if (title) {
+                data.title = title;
             }
-        })
-    }
+            if (image) {
+                data.image = image;
+            }
 
+            if (author) {
+                data.author = author;
+            }
+
+            if (description) {
+                data.description = description;
+            }
+            if (published) {
+                data.published = published;
+            }
+
+            data.save((err, editedBook) => {
+                if (err) {
+                    next(err)
+                } else {
+                    res.status(200).send(editedBook);
+                }
+            })
+        }
+    })
 }
 
 
 const deleteBook = (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({
-        message: "You need to be an admin to delete a book"
-      });
-    } else {
       const id = req.params.id;
       Book.findByIdAndDelete({ _id: id }, (err, data) => {
         if (err) next(err);
@@ -109,7 +100,6 @@ const deleteBook = (req, res, next) => {
             });
         }
     })
-}
 }
 
 module.exports = {createBook, allBooks, bookEntry, updateBook, deleteBook}
