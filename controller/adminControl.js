@@ -40,8 +40,8 @@ const adminLogin = async (req, res) => {
                 message: "Invalid email/password"
             });
         } else {
-            // var isMatch = bcrypt.compare(password, User.password)
-            var isMatch = password === User.password;
+            var isMatch = bcrypt.compare(password, User.password)
+            // var isMatch = password === User.password;
             if (!isMatch) {
                 errors.password = 'Password Incorrect';
                 return res.status(401).json({
@@ -57,7 +57,7 @@ const adminLogin = async (req, res) => {
         }
     }
     catch (err) {
-        return next (err);
+        return next(err);
     }
 }
 const adminShow = async (req, res, next) => {
