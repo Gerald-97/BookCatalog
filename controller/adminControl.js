@@ -31,7 +31,7 @@ const adminReg = async (req, res, next) => {
     }
 }
 
-const adminLogin = async (req, res) => {
+const adminLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         var data = await User.findOne({ email });
@@ -40,15 +40,13 @@ const adminLogin = async (req, res) => {
                 message: "Invalid email/password"
             });
         } else {
-            var isMatch = bcrypt.compare(password, User.password)
-            // var isMatch = password === User.password;
+            var isMatch = await bcrypt.compare(password, data.password)
             if (!isMatch) {
-                errors.password = 'Password Incorrect';
                 return res.status(401).json({
                     message: "Invalid email/password"
                 });
             } else {
-                const token = jwt.sign({ isAdmin: data.isAdmin }, process.env.SECRET, { expiresIn: '5h'});
+                const token = await jwt.sign({ isAdmin: data.isAdmin }, process.env.SECRET, { expiresIn: '5h'});
                 return res.status(200).json({
                     message: "Logged in Successfully",
                     token
