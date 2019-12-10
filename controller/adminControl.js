@@ -10,7 +10,12 @@ const adminReg = async (req, res, next) => {
             return res.status(400).json({
                 message: 'User has been registered already'
             })
-        } else {
+        } else if (password.length <= 6) {
+            return res.status(400).json({
+                message: 'Your password must be more than 6 characters'
+            })
+        }
+        else {
             var salt = await bcrypt.genSalt(10);
             var hash = await bcrypt.hash(password, salt);
             const newUser = new User({
